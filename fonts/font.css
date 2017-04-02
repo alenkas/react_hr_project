@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'AkzidenzGroteskPro-Md';
+  src: url('AkzidenzGroteskPro-Md.woff') format('woff'),
+       url('AkzidenzGroteskPro-Md.ttf') format('truetype'),
+       url('AkzidenzGroteskPro-Md.svg#AkzidenzGroteskPro-Md') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'akzidenzgroteskpro-md-webfont';
+  src: url('akzidenzgroteskpro-md-webfont.eot');
+  src: url('akzidenzgroteskpro-md-webfont.woff2') format('woff2'),
+       url('akzidenzgroteskpro-md-webfont.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
