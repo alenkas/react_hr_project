@@ -3,13 +3,16 @@ var projectsList = [
 		name: "первый",
 		vacancies: [
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: true
 			},
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: true
 			},
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: true
 			}
 		]
 	},
@@ -17,7 +20,8 @@ var projectsList = [
 		name: "второй",
 		vacancies: [
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: false
 			}
 		]
 	},
@@ -25,22 +29,28 @@ var projectsList = [
 		name: " третий",
 		vacancies: [
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: true
 			},
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: false
 			},
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: true
 			},
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: false
 			},
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: true
 			},
 			{
-				name: "Менеджер"
+				name: "Менеджер",
+				status: true
 			}
 		]
 	}
@@ -70,21 +80,56 @@ var VacanciesList = React.createClass({
 	}
 });
 
+var VacancyAdd = React.createClass({
+	getInitialState: function(){
+		var vacancies = this.props.vacancies;
+		console.log(vacancies);
+		return {vacanciesList: vacancies, input: ''};
+	},
+	onAddProject: function(e){
+		console.log(this.props.vacancies);
+		// var vacancyName = this.state.vacanciesList;
+		var vacancy = this.props.vacancies.push({name: this.state.input});
+		this.setState({
+			vacanciesList: vacancy
+		});
+		render();
+	},
+	handleClick: function(){
+		this.onAddProject();
+		this.props.onCloseModal();
+	},
+	handleChange: function(e){
+		console.log(e.target.value);
+		this.setState({ input: e.target.value });
+	},
+	render: function(){
+		return(
+			<div>
+				<input type="text" placeholder="Название вакансии" onChange={this.handleChange}/>
+				<button onClick={this.handleClick}>Создать</button>
+			</div>
+		);
+	}
+});
+
 var ProjectList = React.createClass({
 	getInitialState: function(){
 		return { active: []};
 	},
-	handleClick: function(index){
+	handleClick: function(index, e){
+		e.preventDefault();
 		var active = this.state.active.slice();
 		active[index] = !active[index];
 		this.setState({active});
 	},
-
 	renderItem: function(item, index){
 		return (
-			<div key={index} className="project" onClick={this.handleClick.bind(this, index)}>
-				<h2>{item.name}</h2>
-				<p>{item.vacancies.length} вакансии</p>
+			<div key={index} className="project">
+				<h2><a href="#" onClick={this.handleClick.bind(this, index)}>{item.name}</a></h2>
+				<div>{item.vacancies.length} вакансии
+					<AddButton index={index} vacancies={item.vacancies}/>
+				</div>
 				<div className={this.state.active[index] ? "show" : "hidden"}>
 					<VacanciesList vacancies={item.vacancies}/>
 				</div>
@@ -93,8 +138,7 @@ var ProjectList = React.createClass({
 	},
 	render: function(){
 		var project = this.props.project;
-		// console.log("project", project);
-		// Arrow function is used to pass 'this' inside map function
+
 		var project_list = project.map(this.renderItem);
 		return (
 			<div className="project-list">
@@ -133,11 +177,10 @@ var ProjectAdd = React.createClass({
 		return {projectList: projectsList, input: ''};
 	},
 	onAddProject: function(e){
-		var projectName = this.state.projectList;
+		// var projectName = this.state.projectList;
 		var project = projectsList.push({name: this.state.input, vacancies: 0});
 		this.setState({
-			projectList: project,
-			isModalOpen: false
+			projectList: project
 		});
 		console.log(this.state.input);
 		console.log(projectsList);
@@ -145,7 +188,7 @@ var ProjectAdd = React.createClass({
 	},
 	handleClick: function(){
 		this.onAddProject();
-		this.props.onCloseProject();
+		this.props.onCloseModal();
 	},
 	handleChange: function(e){
 		console.log(e.target.value);
@@ -154,14 +197,14 @@ var ProjectAdd = React.createClass({
 	render: function(){
 		return(
 			<div>
-				<input type="text" placeholder="Название проекта" onChange={this.handleChange}/>
+				<input type="text" placeholder="Название" onChange={this.handleChange}/>
 				<button onClick={this.handleClick}>Создать</button>
 			</div>
 		);
 	}
 });
 
-var ProjectAddButton = React.createClass({
+var AddButton = React.createClass({
 	getInitialState: function(){
 		return {isModalOpen: false};
 	},
@@ -169,11 +212,13 @@ var ProjectAddButton = React.createClass({
 		this.setState({isModalOpen: !this.state.isModalOpen})
 	},
 	render: function(){
+		// console.log("index is", this.props.index);
+		// console.log("vacancies", this.props.vacancies);
 		return (
 			<div className="project-new" onClick={this.handleClick}>
-				<button onClick={this.toggleModal}>Добавить проект</button>
+				<button onClick={this.toggleModal}>Добавить {this.props.name}</button>
 				<Modal show={this.state.isModalOpen}
-					onClose={this.toggleModal}/>
+					onClose={this.toggleModal} name={this.props.name} title={this.props.title} vacancies={this.props.vacancies}/>
 			</div>
 		);
 	}
@@ -185,7 +230,9 @@ var Modal = React.createClass({
 		if(!this.props.show){
 			return null;
 		}
-		return (
+		console.log(this.props.title);
+		if(this.props.title == "Проект"){
+			return (
 			<div className="background-overlay">
 				<div className="modal">
 					Новый проект
@@ -194,7 +241,21 @@ var Modal = React.createClass({
 					<ProjectAdd onCloseProject={this.props.onClose}/>
 				</div>
 			</div>
+			);	
+		} else {
+			// console.log("vacancies", this.props.vacancies);
+			return (
+			<div className="background-overlay">
+				<div className="modal">
+					Новая вакансия
+					<a href="#" onClick={this.props.onClose}>закрыть</a>
+					<hr/>
+					<VacancyAdd onCloseModal={this.props.onClose} vacancies={this.props.vacancies}/>
+				</div>
+			</div>
 		);
+		}
+		
 	}
 });
 
@@ -203,7 +264,7 @@ var App = React.createClass({
 		return (
 			<div>
 				<ProjectFilter/>
-				<ProjectAddButton/>
+				<AddButton name="проект" title="Проект"/>
 				<ProjectList project={projectsList}/>
 			</div>
 		);
