@@ -1,55 +1,55 @@
 var projectsList = [
 	{
-		name: "первый",
+		name: "Финансовый отдел",
 		vacancies: [
 			{
-				name: "Менеджер",
+				name: "Бухгалтер",
 				status: true
 			},
 			{
-				name: "Менеджер",
+				name: "Аудитор",
 				status: true
 			},
 			{
-				name: "Менеджер",
-				status: true
-			}
-		]
-	},
-	{
-		name: "второй",
-		vacancies: [
-			{
-				name: "Менеджер",
+				name: "Финансовый директор",
 				status: false
 			}
 		]
 	},
 	{
-		name: " третий",
+		name: "Кадры",
 		vacancies: [
 			{
-				name: "Менеджер",
+				name: "Менеджер по найму персонала",
+				status: false
+			}
+		]
+	},
+	{
+		name: "Call-центр",
+		vacancies: [
+			{
+				name: "Руководитель группы",
 				status: true
 			},
 			{
-				name: "Менеджер",
+				name: "Оператор call-центра Москва",
 				status: false
 			},
 			{
-				name: "Менеджер",
+				name: "Оператор call-центра Барнаул",
 				status: true
 			},
 			{
-				name: "Менеджер",
+				name: "Руководитель отдела",
 				status: false
 			},
 			{
-				name: "Менеджер",
+				name: "Технический специалист",
 				status: true
 			},
 			{
-				name: "Менеджер",
+				name: "Менеджер по продаже оборудования",
 				status: true
 			}
 		]
@@ -66,10 +66,9 @@ var DeleteVacancy = React.createClass({
 	},
 	handleClick: function(e){
 		e.preventDefault();
-		console.log("hello");
+
 		var vacancies = this.props.vacancies;
 		var index = this.props.index;
-		console.log(index);
 		
 		this.setState({
 			vacanciesList: vacancies.splice(index, 1)
@@ -77,8 +76,6 @@ var DeleteVacancy = React.createClass({
 		render();
 	},
 	render: function(){
-		console.log(this.props.vacancies);
-		console.log(this.props.index);
 		return(
 			<a href="#" onClick={this.handleClick}>Удалить</a>
 		);
@@ -116,11 +113,9 @@ var VacanciesList = React.createClass({
 					<h3>{item.name}</h3>
 					<div>
 						<p><i className={icon}></i>{itemStatus}</p>
-						<DeleteVacancy vacancies={vacancy} index={index}/>
 						<CloseVacancy/>
+						<DeleteVacancy vacancies={vacancy} index={index}/>
 					</div>
-					
-
 				</div>
 				);
 			});
@@ -181,6 +176,10 @@ var ProjectList = React.createClass({
 				<h2><a href="#" onClick={this.handleClick.bind(this, index)}>{item.name}</a></h2>
 				<div>{item.vacancies.length} вакансии
 					<AddButton index={index} vacancies={item.vacancies}/>
+				</div>
+				<div>
+					<DeleteProject project={item} index={index}/>
+					<CloseProject/>
 				</div>
 				<div className={this.state.active[index] ? "show" : "hidden"}>
 					<VacanciesList vacancies={item.vacancies}/>
@@ -252,6 +251,39 @@ var ProjectAdd = React.createClass({
 				<input type="text" placeholder="Название" onChange={this.handleChange}/>
 				<button onClick={this.handleClick}>Создать</button>
 			</div>
+		);
+	}
+});
+
+var DeleteProject = React.createClass({
+	getInitialState: function(){
+		return {projectList: projectsList};
+	},
+	handleClick: function(e){
+		e.preventDefault();
+
+		var index = this.props.index;
+		
+		this.setState({
+			projectList: projectsList.splice(index, 1)
+		});
+		render();
+	},
+	render: function(){
+		return(
+			<a href="#" onClick={this.handleClick}>Удалить</a>
+		);
+	}
+});
+
+var CloseProject = React.createClass({
+	handleClick: function(e){
+		e.preventDefault();
+		console.log("hello2");
+	},
+	render: function(){
+		return(
+			<a href="#" onClick={this.handleClick}>закрыть вакансию</a>
 		);
 	}
 });
