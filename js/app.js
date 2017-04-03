@@ -50,14 +50,18 @@ var VacanciesList = React.createClass({
 	render: function(){
 		// console.log(this.props.vacancies);
 		var vacancy = this.props.vacancies;
-		var vacancy_list = vacancy.map(function(item, index){
+		if(vacancy.length > 0){
+			var vacancy_list = vacancy.map(function(item, index){
 			return (
 				<div key={index} className="vacancy">
 					<h3>{item.name}</h3>
 					<p></p>
 				</div>
-			);
-		});
+				);
+			});
+		} else {
+			return null;
+		}
 		return (
 			<div>
 				{vacancy_list}
@@ -74,7 +78,6 @@ var ProjectList = React.createClass({
 		var active = this.state.active.slice();
 		active[index] = !active[index];
 		this.setState({active});
-
 	},
 
 	renderItem: function(item, index){
@@ -111,12 +114,43 @@ var ProjectFilter = React.createClass({
 	}
 });
 
+var ProjectNew = React.createClass({
+	render: function(){
+		return (
+			<div className="project" onClick={this.handleClick.bind(this, index)}>
+				<h2>{item.name}</h2>
+				<p>{item.vacancies.length} вакансии</p>
+				<div className={this.state.active[index] ? "show" : "hidden"}>
+					<VacanciesList vacancies={item.vacancies}/>
+				</div>
+			</div>
+		);
+	}
+})
+
 var ProjectAdd = React.createClass({
+	getInitialState: function(){
+		return {projectList: projectsList, input: ''};
+	},
+	onAddProject: function(e){
+		var projectName = this.state.projectList;
+		var project = projectsList.push({name: this.state.input, vacancies: 0});
+		this.setState({
+			projectList: project
+		});
+		console.log(this.state.input);
+		console.log(projectsList);
+		rerender();
+	},
+	handleChange: function(e){
+		console.log(e.target.value);
+		this.setState({input: e.target.value});
+	},
 	render: function(){
 		return(
 			<div>
-				<input type="text" placeholder="Название проекта"/>
-				<button onClick={this.openModal}>Создать</button>
+				<input type="text" placeholder="Название проекта" onChange={this.handleChange}/>
+				<button onClick={this.onAddProject}>Создать</button>
 			</div>
 		);
 	}
@@ -171,7 +205,10 @@ var App = React.createClass({
 	}
 });
 
-ReactDOM.render(
-	<App/>,
-	document.getElementById('root')
-);
+function render(){
+	ReactDOM.render(
+		<App/>,
+		document.getElementById('root')
+	);
+}
+render();
