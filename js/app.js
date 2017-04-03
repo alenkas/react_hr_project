@@ -76,8 +76,8 @@ var ProjectList = React.createClass({
 		this.setState({active});
 
 	},
+
 	renderItem: function(item, index){
-		
 		return (
 			<div key={index} className="project" onClick={this.handleClick.bind(this, index)}>
 				<h2>{item.name}</h2>
@@ -101,16 +101,6 @@ var ProjectList = React.createClass({
 	}
 });
 
-var ProjectNew = React.createClass({
-	render: function(){
-		return (
-			<div className="project-new">
-				<button>Добавить проект</button>
-			</div>
-		);
-	}
-});
-
 var ProjectFilter = React.createClass({
 	render: function(){
 		return (
@@ -121,12 +111,60 @@ var ProjectFilter = React.createClass({
 	}
 });
 
+var ProjectAdd = React.createClass({
+	render: function(){
+		return(
+			<div>
+				<input type="text" placeholder="Название проекта"/>
+				<button onClick={this.openModal}>Создать</button>
+			</div>
+		);
+	}
+});
+
+var ProjectAddButton = React.createClass({
+	getInitialState: function(){
+		return {isModalOpen: false};
+	},
+	toggleModal: function(){
+		this.setState({isModalOpen: !this.state.isModalOpen})
+	},
+	render: function(){
+		return (
+			<div className="project-new" onClick={this.handleClick}>
+				<button onClick={this.toggleModal}>Добавить проект</button>
+				<Modal show={this.state.isModalOpen}
+					onClose={this.toggleModal}/>
+			</div>
+		);
+	}
+});
+
+var Modal = React.createClass({
+	render: function(){
+		console.log(this.props.show);
+		if(!this.props.show){
+			return null;
+		}
+		return (
+			<div className="background-overlay">
+				<div className="modal">
+					Новый проект
+					<a href="#" onClick={this.props.onClose}>закрыть</a>
+					<hr/>
+					<ProjectAdd/>
+				</div>
+			</div>
+		);
+	}
+});
+
 var App = React.createClass({
 	render: function(){
 		return (
 			<div>
 				<ProjectFilter/>
-				<ProjectNew/>
+				<ProjectAddButton/>
 				<ProjectList project={projectsList}/>
 			</div>
 		);
