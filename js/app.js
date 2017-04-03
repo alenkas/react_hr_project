@@ -56,16 +56,71 @@ var projectsList = [
 	}
 ];
 
+var vacancyOpen = "Вакансия открыта, идёт набор кандидатов";
+var vacancyClosed = "Вакансия закрыта, сотрудник нанят";
+
+var DeleteVacancy = React.createClass({
+	getInitialState: function(){
+		var vacancies = this.props.vacancies;
+		return {vacanciesList: vacancies};
+	},
+	handleClick: function(e){
+		e.preventDefault();
+		console.log("hello");
+		var vacancies = this.props.vacancies;
+		var index = this.props.index;
+		console.log(index);
+		
+		this.setState({
+			vacanciesList: vacancies.splice(index, 1)
+		});
+		render();
+	},
+	render: function(){
+		console.log(this.props.vacancies);
+		console.log(this.props.index);
+		return(
+			<a href="#" onClick={this.handleClick}>Удалить</a>
+		);
+	}
+});
+
+var CloseVacancy = React.createClass({
+	handleClick: function(e){
+		e.preventDefault();
+		console.log("hello2");
+	},
+	render: function(){
+		return(
+			<a href="#" onClick={this.handleClick}>закрыть вакансию</a>
+		);
+	}
+});
+
 var VacanciesList = React.createClass({
 	render: function(){
 		// console.log(this.props.vacancies);
 		var vacancy = this.props.vacancies;
 		if(vacancy.length > 0){
 			var vacancy_list = vacancy.map(function(item, index){
+				var itemStatus, icon;
+				if(item.status){
+					itemStatus = vacancyOpen;
+					icon = "";
+				} else {
+					itemStatus = vacancyClosed;
+					icon = "";
+				}
 			return (
 				<div key={index} className="vacancy">
 					<h3>{item.name}</h3>
-					<p></p>
+					<div>
+						<p><i className={icon}></i>{itemStatus}</p>
+						<DeleteVacancy vacancies={vacancy} index={index}/>
+						<CloseVacancy/>
+					</div>
+					
+
 				</div>
 				);
 			});
@@ -83,12 +138,9 @@ var VacanciesList = React.createClass({
 var VacancyAdd = React.createClass({
 	getInitialState: function(){
 		var vacancies = this.props.vacancies;
-		console.log(vacancies);
 		return {vacanciesList: vacancies, input: ''};
 	},
 	onAddProject: function(e){
-		console.log(this.props.vacancies);
-		// var vacancyName = this.state.vacanciesList;
 		var vacancy = this.props.vacancies.push({name: this.state.input});
 		this.setState({
 			vacanciesList: vacancy
