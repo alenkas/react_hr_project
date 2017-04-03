@@ -126,7 +126,7 @@ var ProjectNew = React.createClass({
 			</div>
 		);
 	}
-})
+});
 
 var ProjectAdd = React.createClass({
 	getInitialState: function(){
@@ -136,11 +136,16 @@ var ProjectAdd = React.createClass({
 		var projectName = this.state.projectList;
 		var project = projectsList.push({name: this.state.input, vacancies: 0});
 		this.setState({
-			projectList: project
+			projectList: project,
+			isModalOpen: false
 		});
 		console.log(this.state.input);
 		console.log(projectsList);
-		rerender();
+		render();
+	},
+	handleClick: function(){
+		this.onAddProject();
+		this.props.onCloseProject();
 	},
 	handleChange: function(e){
 		console.log(e.target.value);
@@ -150,7 +155,7 @@ var ProjectAdd = React.createClass({
 		return(
 			<div>
 				<input type="text" placeholder="Название проекта" onChange={this.handleChange}/>
-				<button onClick={this.onAddProject}>Создать</button>
+				<button onClick={this.handleClick}>Создать</button>
 			</div>
 		);
 	}
@@ -186,7 +191,7 @@ var Modal = React.createClass({
 					Новый проект
 					<a href="#" onClick={this.props.onClose}>закрыть</a>
 					<hr/>
-					<ProjectAdd/>
+					<ProjectAdd onCloseProject={this.props.onClose}/>
 				</div>
 			</div>
 		);
