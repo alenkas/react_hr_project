@@ -140,18 +140,20 @@ var VacanciesList = React.createClass({
 		if(vacancy.length > 0){
 			
 			var vacancy_list = vacancy.map(function(item, index){
-			var itemStatus;
+			var itemStatus, iconClassName;
 			if(that.props.newState[index].status){
 				itemStatus = vacancyOpen;
+				iconClassName = "glyphicon glyphicon-search";
 			} else {
 				itemStatus = vacancyClosed;
+				iconClassName = "glyphicon glyphicon-ok";
 			}			
 			return (
 				<div key={index} className="vacancy">
 					<h3>{item.name}</h3>
 					<div>
 						<div className="vacancy-status">
-							<p><i></i>{itemStatus}</p>
+							<p><i className={iconClassName}></i>{itemStatus}</p>
 						</div>
 						<div className="vacancy-links">
 						

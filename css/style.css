@@ -17,7 +17,7 @@ body {
 	font-family: 'Roboto', sans-serif;
 }
 
-.container {
+.body-container {
 	background: #f2f2f2;
 	padding: 48px;
 }
@@ -43,6 +43,10 @@ a.link-grey, a.link-grey:visited, a.link-grey:focus, a.link-grey:hover {
 
 a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
 	color: #00aa87;
+}
+
+i.glyphicon {
+    padding: 0 5px 0 0;
 }
 
 .project {
@@ -104,6 +108,7 @@ a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
 	padding-left: 50px;
 	text-transform: uppercase;
 	font-weight: bold;
+	display: inline-block;
 }
 
 .vacancy-filter {
