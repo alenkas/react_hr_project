@@ -83,37 +83,76 @@ var DeleteVacancy = React.createClass({
 });
 
 var CloseVacancy = React.createClass({
-	handleClick: function(e){
+	getInitialState: function(e){
+		var vacancies = this.props.vacancies;
+		// console.log(this.props.vacancies[this.props.index].status);
+		return {status: this.props.vacancies[this.props.index].status};
+	},
+	changeStatus: function(e){
 		e.preventDefault();
-		console.log("hello2");
+		var state = this.state.status;
+		
+		state = !state;
+
+		this.props.addStatus(state, this.props.index);
+		this.setState({
+			status: state
+		});
+		// console.log(this.state.status);
+		
+		// console.log(this.props.vacancies);
+
+		
 	},
 	render: function(){
-		return(
-			<a href="#" onClick={this.handleClick}>закрыть вакансию</a>
+		if(this.state.status){
+			return(
+			<a href="#" onClick={this.changeStatus}>Закрыть вакансию</a>
+			);	
+		} else {
+			return(
+			<a href="#" onClick={this.changeStatus}>Открыть вакансию</a>
 		);
+		}
+		
 	}
 });
 
 var VacanciesList = React.createClass({
+	getInitialState: function(){
+		return {status: this.props.vacancies};
+	},
+	addStatus: function(status, index){
+		// console.log(status);
+		// console.log("this.state.status", this.state.status);
+		// console.log("this.state.status index", this.state.status[index].status);
+		this.state.status[index].status = status;
+		this.setState({
+			status: this.state.status
+		});
+	},
 	render: function(){
 		// console.log(this.props.vacancies);
 		var vacancy = this.props.vacancies;
+		var that = this;
+		
 		if(vacancy.length > 0){
 			var vacancy_list = vacancy.map(function(item, index){
-				var itemStatus, icon;
-				if(item.status){
-					itemStatus = vacancyOpen;
-					icon = "";
-				} else {
-					itemStatus = vacancyClosed;
-					icon = "";
-				}
+			var itemStatus;
+
+			// console.log(that.state.status);
+			
+			if(that.state.status[index].status){
+				itemStatus = vacancyOpen;
+			} else {
+				itemStatus = vacancyClosed;
+			}			
 			return (
 				<div key={index} className="vacancy">
 					<h3>{item.name}</h3>
 					<div>
-						<p><i className={icon}></i>{itemStatus}</p>
-						<CloseVacancy/>
+						<p>{itemStatus}</p>
+						<CloseVacancy addStatus={that.addStatus} vacancies={vacancy} index={index}/>
 						<DeleteVacancy vacancies={vacancy} index={index}/>
 					</div>
 				</div>
@@ -135,15 +174,22 @@ var VacancyAdd = React.createClass({
 		var vacancies = this.props.vacancies;
 		return {vacanciesList: vacancies, input: ''};
 	},
-	onAddProject: function(e){
-		var vacancy = this.props.vacancies.push({name: this.state.input});
+	onAddVacancy: function(e){
+		console.log(this.props.vacancies);
+		if(this.props.vacancies.length > 0){
+			var vacancy = this.props.vacancies.push({name: this.state.input});	
+		} else {
+			this.props.vacancies = [{name: this.state.input, status: false}];
+			var vacancy = this.props.vacancies;
+		}
+		
 		this.setState({
 			vacanciesList: vacancy
 		});
 		render();
 	},
 	handleClick: function(){
-		this.onAddProject();
+		this.onAddVacancy();
 		this.props.onCloseModal();
 	},
 	handleChange: function(e){
@@ -178,8 +224,8 @@ var ProjectList = React.createClass({
 					<AddButton index={index} vacancies={item.vacancies}/>
 				</div>
 				<div>
-					<DeleteProject project={item} index={index}/>
 					<CloseProject/>
+					<DeleteProject project={item} index={index}/>
 				</div>
 				<div className={this.state.active[index] ? "show" : "hidden"}>
 					<VacanciesList vacancies={item.vacancies}/>
@@ -199,11 +245,14 @@ var ProjectList = React.createClass({
 	}
 });
 
-var ProjectFilter = React.createClass({
+var VacancyFilter = React.createClass({
 	render: function(){
 		return (
-			<div className="project-filter">
-				<input type="text" className="project_filter"/>
+			<div className="vacancy-filter">
+				<input 
+					type="text"
+					className="vacancy_filter" 
+					placeholder="Search"/>
 			</div>
 		);
 	}
@@ -283,7 +332,7 @@ var CloseProject = React.createClass({
 	},
 	render: function(){
 		return(
-			<a href="#" onClick={this.handleClick}>закрыть вакансию</a>
+			<a href="#" onClick={this.handleClick}>закрыть проект</a>
 		);
 	}
 });
@@ -322,7 +371,7 @@ var Modal = React.createClass({
 					Новый проект
 					<a href="#" onClick={this.props.onClose}>закрыть</a>
 					<hr/>
-					<ProjectAdd onCloseProject={this.props.onClose}/>
+					<ProjectAdd onCloseModal={this.props.onClose}/>
 				</div>
 			</div>
 			);	
@@ -347,7 +396,7 @@ var App = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<ProjectFilter/>
+				<VacancyFilter/>
 				<AddButton name="проект" title="Проект"/>
 				<ProjectList project={projectsList}/>
 			</div>
