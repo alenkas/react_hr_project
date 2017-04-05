@@ -1,0 +1,190 @@
+@font-face {
+  font-family: 'AkzidenzGroteskPro-Md';
+  src: url('../fonts/AkzidenzGroteskPro-Md.eot'); /* IE9+ Compat Modes */
+  src: url('../fonts/AkzidenzGroteskPro-Md.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/AkzidenzGroteskPro-Md.woff2') format('woff2'), /* Super modern browsers */
+       url('../fonts/AkzidenzGroteskPro-Md.woff') format('woff'), /* Modern browsers */
+       url('../fonts/AkzidenzGroteskPro-Md.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/AkzidenzGroteskPro-Md.svg#FontName') format('svg'); /* Legacy iOS */
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	position: relative;
+	font-family: 'Roboto', sans-serif;
+}
+
+.container {
+	background: #f2f2f2;
+	padding: 48px;
+}
+
+h1 {
+  	font-family: "AkzidenzGroteskPro-Md";
+  	font-size: 82px;
+  	line-height: 0.78;
+  	letter-spacing: -0.1px;
+  	color: #1a1818;
+}
+
+a, a:visited, a:focus, a:hover {
+	text-decoration: none;
+	color: rgba(0, 0, 0, 0.87);
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
+a.link-grey, a.link-grey:visited, a.link-grey:focus, a.link-grey:hover {
+	color: rgba(0, 0, 0, 0.37);
+}
+
+a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
+	color: #00aa87;
+}
+
+.project {
+	background: #fff;
+    padding: 16px 24px;
+    margin: 20px 0;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.12);
+}
+
+.project h2 {
+  	font-family: Roboto;
+  	font-size: 23px;
+  	line-height: 1.39;
+  	color: rgba(0, 0, 0, 0.87);
+  	padding-bottom: 12px;
+  	margin: 0;
+}
+
+.project h2 a {
+	text-transform: none;
+	font-size: 23px;
+}
+
+.project-new {	
+	float: right;
+	width: 215px;
+  	height: 36px;
+  	border-radius: 2px;
+  	background-color: #00aa87;
+  	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.12);
+}
+
+.project-new a {	
+	width: inherit;
+    height: inherit;
+    display: block;
+  	font-size: 14px;
+  	font-weight: 500;
+  	line-height: 36px;
+  	letter-spacing: 0.5px;
+  	text-align: center;
+  	color: #ffffff;
+}
+
+.project-info {
+	display: inline-block;
+}
+
+.project-info span {
+	font-size: 16px;
+	font-weight: normal;
+}
+
+.project-links, .vacancy-links {
+	text-transform: uppercase;
+	font-size: 14px;
+	float: right;
+}
+
+.project-links a, .vacancy-links a{
+	padding-left: 50px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.vacancy-filter {
+	display: inline-block;
+
+}
+
+.vacancy-filter input {
+	width: 340px;
+  	height: 40px;
+  	border-radius: 2px;
+  	background-color: #ffffff;
+  	border: solid 1px rgba(0, 0, 0, 0.12);
+  	padding: 20px;
+}
+
+.vacancy-filter input::-webkit-input-placeholder {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+}
+
+.vacancy {
+	border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.vacancy-new {
+	display: inline-block;
+}
+
+.vacancy-new a {
+	padding: 0 20px;
+	color: #00aa87;
+	
+}
+
+.vacancy-new span {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.vacancies-list {
+	padding-top: 20px;
+}
+
+.vacancy-status {
+	display: inline-block;
+}
+
+.vacancy-status p {
+	font-size: 13px;
+	color: rgba(0, 0, 0, 0.57);
+}
+
+.background-overlay {
+	background: rgba(0, 0, 0, 0.39);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.modal {
+	width: 600px;
+	height: 150px;
+	background: #fff;
+	border-radius: 5px;
+	padding: 30px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -75px 0 0 -300px;
+	z-index: 100;
+}
+
+.hidden {
+	display: none;
+}
+
+.show {
+	display: block;
+}
