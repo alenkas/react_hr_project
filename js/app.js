@@ -138,6 +138,8 @@ var VacanciesList = React.createClass({
 		var that = this;
 		
 		if(vacancy.length > 0){
+
+			console.log(this.props.projects);
 			
 			var vacancy_list = vacancy.map(function(item, index){
 			var itemStatus, iconClassName;
@@ -147,10 +149,12 @@ var VacanciesList = React.createClass({
 			} else {
 				itemStatus = vacancyClosed;
 				iconClassName = "glyphicon glyphicon-ok";
-			}			
-			return (
+			}
+
+			
+				return (
 				<div key={index} className="vacancy">
-					<h3>{item.name}</h3>
+					<h4>{item.name}</h4>
 					<div>
 						<div className="vacancy-status">
 							<p><i className={iconClassName}></i>{itemStatus}</p>
@@ -164,6 +168,7 @@ var VacanciesList = React.createClass({
 					</div>
 				</div>
 				);
+
 			});
 		} else {
 			return null;
@@ -183,12 +188,12 @@ var VacancyAdd = React.createClass({
 	},
 	onAddVacancy: function(e){
 		console.log(this.props.vacancies);
-		if(this.props.vacancies.length > 0){
-			var vacancy = this.props.vacancies.push({name: this.state.input});	
-		} else {
-			this.props.vacancies = [{name: this.state.input, status: false}];
-			var vacancy = this.props.vacancies;
-		}
+		// if(this.props.vacancies.length > 0){
+		var vacancy = this.props.vacancies.push({name: this.state.input});	
+		// } else {
+			// this.props.vacancies.push({name: this.state.input, status: false});
+			// var vacancy = this.props.vacancies;
+		// }
 		
 		this.setState({
 			vacanciesList: vacancy
@@ -267,7 +272,7 @@ var ProjectList = React.createClass({
 				</div>
 				</div>
 				<div className={this.state.active[index] ? "show" : "hidden"}>
-					<VacanciesList newState={item.vacancies} vacancies={item.vacancies}/>
+					<VacanciesList filterText={this.props.filterText} newState={item.vacancies} vacancies={item.vacancies}/>
 				</div>
 			</div>
 		)
@@ -284,14 +289,94 @@ var ProjectList = React.createClass({
 	}
 });
 
-var VacancyFilter = React.createClass({
+var SearchBar = React.createClass({
+	handleFilterTextInputChange: function(e){
+		this.props.onFilterTextInput(e.target.value);
+	},
 	render: function(){
 		return (
-			<div className="vacancy-filter">
+			<div>
 				<input 
 					type="text"
 					className="vacancy_filter" 
-					placeholder="Поиск по вакансиям"/>
+					placeholder="Поиск по вакансиям"
+					onChange={this.handleFilterTextInputChange}
+				/>
+				<input
+					type="checkbox"
+				/>
+				<span>Только открытые</span>
+			</div>
+		);
+	}
+});
+
+var VacancyFilter = React.createClass({
+	getInitialState: function(){
+		return {
+			filterText: '',
+			isOpen: false,
+			projects: this.props.projects,
+			filteredProjects: []
+		}
+	},
+	handleFilterTextInput: function(filterText){
+		console.log(filterText);
+		var updated = this.state.projects;
+		var filteredProjects = [];
+
+
+		updated = updated.filter(function(project){
+			var news = [];
+			var test = project.vacancies.filter(function(item){
+				console.log(filterText);
+				console.log(item.name);
+				console.log(item.name.toLowerCase().indexOf(filterText.toLowerCase()));
+				if(item.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1){
+					news.push(item);
+					return true;
+				} else {
+					return false;
+				}
+				// return item.name.toLowerCase().search(filterText.toLowerCase() !== -1);
+			});
+
+			console.log("test", test);
+			if(test.length > 0){
+				filteredProjects.push({
+					name: project.name,
+					status: project.status,
+					vacancies: test
+				});
+			}
+		});
+		console.log("updated", filteredProjects);
+		
+		this.setState({
+			filteredProjects: filteredProjects
+		})
+	},
+	render: function(){
+		var projects;
+		console.log(this.state.filteredProjects);
+		if(this.state.filteredProjects.length == 0){
+			console.log(true);
+			projects = this.props.projects;
+		} else {
+			projects = this.state.filteredProjects;
+		}
+		console.log(this.props.projects);
+		console.log(projects);
+		return (
+			<div className="vacancy-filter">
+				<SearchBar
+					filterText={this.state.filterText}
+					onFilterTextInput={this.handleFilterTextInput}
+				/>
+				<ProjectList 
+					projects={projects}
+					filterText={this.state.filteredProjects}
+				/>
 			</div>
 		);
 	}
@@ -466,9 +551,8 @@ var App = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<VacancyFilter/>
+				<VacancyFilter projects={projectsList}/>
 				<AddButton name="проект" title="Проект"/>
-				<ProjectList projects={projectsList}/>
 			</div>
 		);
 	}
