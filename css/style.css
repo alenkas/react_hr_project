@@ -49,6 +49,22 @@ i.glyphicon {
     padding: 0 5px 0 0;
 }
 
+.green-button {
+	width: 120px;
+  	height: 36px;
+  	border-radius: 4px;
+  	background-color: #00aa87;
+  	box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12);
+  	border-style: none;
+  	display: inline-block;
+  	text-align: center;
+  	line-height: 36px;
+}
+
+.green-button a{
+	color: #fff;
+}
+
 .project {
 	background: #fff;
     padding: 16px 24px;
@@ -63,6 +79,7 @@ i.glyphicon {
   	color: rgba(0, 0, 0, 0.87);
   	padding-bottom: 12px;
   	margin: 0;
+  	width: 65%;
 }
 
 .project h2 a {
@@ -79,9 +96,9 @@ i.glyphicon {
   	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.12);
 }
 
-.project-new a {	
-	width: inherit;
-    height: inherit;
+.project-new > a.link {	
+	/*width: inherit;*/
+    /*height: inherit;*/
     display: block;
   	font-size: 14px;
   	font-weight: 500;
@@ -109,6 +126,15 @@ i.glyphicon {
 	text-transform: uppercase;
 	font-weight: bold;
 	display: inline-block;
+}
+
+.project-status {
+	margin-left: 20px;
+}
+
+.project-status span, .project-status i {
+	font-size: 13px;
+	color: rgba(0, 0, 0, 0.37);
 }
 
 .vacancy-filter {
@@ -156,12 +182,15 @@ i.glyphicon {
 .vacancy-new a {
 	padding: 0 20px;
 	color: #00aa87;
-	
 }
 
 .vacancy-new span {
 	font-size: 14px;
 	font-weight: bold;
+}
+
+.vacancy-new h4 span {
+	font-size: 19px;
 }
 
 .vacancies-list {
@@ -187,17 +216,38 @@ i.glyphicon {
 	left: 0;
 }
 
-.modal {
+.modal-window {
 	width: 600px;
 	height: 150px;
 	background: #fff;
 	border-radius: 5px;
-	padding: 30px;
+	padding: 20px 24px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	margin: -75px 0 0 -300px;
 	z-index: 100;
+}
+
+
+.modal-window input {
+	width: 424px;
+  	height: 40px;
+  	border-radius: 2px;
+  	padding: 5px 10px;
+  	margin-right: 5px;
+  	background-color: #ffffff;
+  	border: solid 1px rgba(0, 0, 0, 0.12);
+}
+
+.modal-window input::-webkit-input-placeholder {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	font-weight: normal;
+}
+
+.modal-window a {
+	color: #fff;
 }
 
 .hidden {

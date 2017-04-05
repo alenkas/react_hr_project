@@ -195,9 +195,9 @@ var VacancyAdd = React.createClass({
 		});
 		render();
 	},
-	handleClick: function(){
+	handleClick: function(e){
 		this.onAddVacancy();
-		this.props.onCloseModal();
+		this.props.onCloseModal(e);
 	},
 	handleChange: function(e){
 		console.log(e.target.value);
@@ -206,8 +206,10 @@ var VacancyAdd = React.createClass({
 	render: function(){
 		return(
 			<div>
+				<div>	
 				<input type="text" placeholder="Название вакансии" onChange={this.handleChange}/>
-				<button onClick={this.handleClick}>Создать</button>
+				<a className="green-button" href="#" onClick={this.handleClick}>Создать</a>
+				</div>
 			</div>
 		);
 	}
@@ -244,13 +246,20 @@ var ProjectList = React.createClass({
 		this.setState({active});
 	},
 	renderItem: function(item, index){
+		var test;
+		console.log(this.state.projectStatus[index].status);
+		if(this.state.projectStatus[index].status){
+			test = <AddButton index={index} vacancies={item.vacancies} name="вакансию"/>;
+		} else {
+			test = <span className="project-status"><i className="glyphicon glyphicon-ok"></i>Проект закрыт, сотрудники наняты</span>;
+		}
 		return (
 			<div key={index} className="project">
 				<div>
 				<h2><a href="#" onClick={this.handleClick.bind(this, index)}>{item.name}</a></h2>
 				<div className="project-info">
 					<span>{item.vacancies.length} вакансии</span>
-					<AddButton index={index} vacancies={item.vacancies} name="вакансию"/>
+					{test}
 				</div>
 				<div className="project-links">
 					<CloseProject projects={this.props.projects} addStatus={this.addStatus} project={item} index={index}/>
@@ -308,7 +317,7 @@ var ProjectAdd = React.createClass({
 	},
 	onAddProject: function(e){
 		// var projectName = this.state.projectList;
-		var project = projectsList.push({name: this.state.input, vacancies: 0});
+		var project = projectsList.push({name: this.state.input, vacancies: []});
 		this.setState({
 			projectList: project
 		});
@@ -316,9 +325,9 @@ var ProjectAdd = React.createClass({
 		console.log(projectsList);
 		render();
 	},
-	handleClick: function(){
+	handleClick: function(e){
 		this.onAddProject();
-		this.props.onCloseModal();
+		this.props.onCloseModal(e);
 	},
 	handleChange: function(e){
 		console.log(e.target.value);
@@ -327,8 +336,8 @@ var ProjectAdd = React.createClass({
 	render: function(){
 		return(
 			<div>
-				<input type="text" placeholder="Название" onChange={this.handleChange}/>
-				<button onClick={this.handleClick}>Создать</button>
+				<input type="text" placeholder="Название проекта" onChange={this.handleChange}/>
+				<a className="green-button" href="#" onClick={this.handleClick}>Создать</a>
 			</div>
 		);
 	}
@@ -336,7 +345,6 @@ var ProjectAdd = React.createClass({
 
 var DeleteProject = React.createClass({
 	getInitialState: function(){
-		
 		return {projectList: this.props.projects};
 	},
 	handleClick: function(e){
@@ -394,8 +402,11 @@ var AddButton = React.createClass({
 		return {isModalOpen: false};
 	},
 	toggleModal: function(e){
+		console.log(e);
 		e.preventDefault();
+		
 		this.setState({isModalOpen: !this.state.isModalOpen})
+		console.log(this.state.isModalOpen);
 	},
 	render: function(){
 		var className;
@@ -424,9 +435,9 @@ var Modal = React.createClass({
 		if(this.props.title == "Проект"){
 			return (
 			<div className="background-overlay">
-				<div className="modal">
+				<div className="modal-window">
 					Новый проект
-					<a className="link link-grey" href="#" onClick={this.props.onClose}>закрыть</a>
+					<a className="link link-grey" href="#" onClick={this.props.onClose}><i className="glyphicon glyphicon-remove"></i></a>
 					<hr/>
 					<ProjectAdd onCloseModal={this.props.onClose}/>
 				</div>
@@ -436,9 +447,11 @@ var Modal = React.createClass({
 			// console.log("vacancies", this.props.vacancies);
 			return (
 			<div className="background-overlay">
-				<div className="modal">
+				<div className="modal-window">
+					<h4>
 					Новая вакансия
-					<a className="link link-grey" href="#" onClick={this.props.onClose}>закрыть</a>
+					<a className="link link-grey" href="#" onClick={this.props.onClose}><i className="glyphicon glyphicon-remove"></i></a>
+					</h4>
 					<hr/>
 					<VacancyAdd onCloseModal={this.props.onClose} vacancies={this.props.vacancies}/>
 				</div>
