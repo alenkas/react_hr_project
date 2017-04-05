@@ -96,9 +96,7 @@ a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
 	font-weight: normal;
 }
 
-.project-links, .vacancy-links {
-	text-transform: uppercase;
-	font-size: 14px;
+.project-links {
 	float: right;
 }
 
@@ -131,6 +129,21 @@ a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
 	border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+.vacancy h3 {
+	margin: 0;
+    padding: 16px 0 5px 0;
+}
+
+.vacancy-links {
+	display: inline-block;
+	width: 50%;
+	text-align: right;
+}
+
+.vacancy-links  div {
+	float: right;
+}
+
 .vacancy-new {
 	display: inline-block;
 }
@@ -152,6 +165,7 @@ a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
 
 .vacancy-status {
 	display: inline-block;
+	width: 50%;
 }
 
 .vacancy-status p {
