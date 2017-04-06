@@ -549,7 +549,7 @@ var Modal = React.createClass({
 					<h4>
 					Новый проект
 					<a className="link link-grey link-right" href="#" onClick={this.props.onClose}><i className="glyphicon glyphicon-remove"></i></a>
-					<h4>
+					</h4>
 					<hr/>
 					<ProjectAdd projects={this.props.projects} onCloseModal={this.props.onClose}/>
 				</div>
