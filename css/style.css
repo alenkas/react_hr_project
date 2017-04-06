@@ -51,8 +51,10 @@ a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
 
 i.close-icon {
 	background: url("../img/close-icon.png") no-repeat;
-	width: 14px;
-	height: 14px;
+	background-size: 100%;
+    width: 14px;
+    height: 14px;
+    display: inline-block;
 }
 
 .vacancy-new a.link-right, .project-new a.link-right {
