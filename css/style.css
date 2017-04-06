@@ -30,6 +30,11 @@ h1 {
   	color: #1a1818;
 }
 
+h4, .h4 {
+	font-size: 16px;
+	position: relative;
+}
+
 a, a:visited, a:focus, a:hover {
 	text-decoration: none;
 	color: rgba(0, 0, 0, 0.87);
@@ -45,8 +50,19 @@ a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
 	color: #00aa87;
 }
 
+.vacancy-new a.link-right, .project-new a.link-right {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0;
+}
+
 i.glyphicon {
     padding: 0 5px 0 0;
+}
+
+.search-bar {
+	display: inline-block;
 }
 
 .green-button {
@@ -138,11 +154,11 @@ i.glyphicon {
 }
 
 .vacancy-filter {
-	display: inline-block;
+	/*display: inline-block;*/
 
 }
 
-.vacancy-filter input {
+.vacancy-filter input[type='text'] {
 	width: 340px;
   	height: 40px;
   	border-radius: 2px;
@@ -230,7 +246,7 @@ i.glyphicon {
 }
 
 
-.modal-window input {
+.modal-window input[type="text"] {
 	width: 424px;
   	height: 40px;
   	border-radius: 2px;
