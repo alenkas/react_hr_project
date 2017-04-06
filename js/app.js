@@ -139,7 +139,7 @@ var VacanciesList = React.createClass({
 		
 		if(vacancy.length > 0){
 
-			console.log(this.props.projects);
+			// console.log(this.props.projects);
 			
 			var vacancy_list = vacancy.map(function(item, index){
 			var itemStatus, iconClassName;
@@ -252,7 +252,7 @@ var ProjectList = React.createClass({
 	},
 	renderItem: function(item, index){
 		var test;
-		console.log(this.state.projectStatus[index].status);
+		// console.log(this.state.projectStatus[index].status);
 		if(this.state.projectStatus[index].status){
 			test = <AddButton index={index} vacancies={item.vacancies} name="вакансию"/>;
 		} else {
@@ -290,12 +290,26 @@ var ProjectList = React.createClass({
 });
 
 var SearchBar = React.createClass({
+	getInitialState: function(){
+		return {checked: false}
+	},
+	handleChange: function(e){
+
+		var checked = !this.state.checked;
+
+		this.props.isVacancyOpen(checked);
+
+		this.setState({checked: checked});
+
+		
+	},
 	handleFilterTextInputChange: function(e){
 		this.props.onFilterTextInput(e.target.value);
 	},
 	render: function(){
+		// console.log(this.state.checked);
 		return (
-			<div>
+			<div className="search-bar">
 				<input 
 					type="text"
 					className="vacancy_filter" 
@@ -304,6 +318,8 @@ var SearchBar = React.createClass({
 				/>
 				<input
 					type="checkbox"
+					checked={this.state.checked}
+					onChange={this.handleChange}
 				/>
 				<span>Только открытые</span>
 			</div>
@@ -320,28 +336,35 @@ var VacancyFilter = React.createClass({
 			filteredProjects: []
 		}
 	},
+	isVacancyOpen: function(open){
+		this.setState({
+			isOpen: open
+		});
+	},
 	handleFilterTextInput: function(filterText){
-		console.log(filterText);
+		// console.log(filterText);
 		var updated = this.state.projects;
 		var filteredProjects = [];
+		var showOnlyOpenVacancies = this.state.isOpen;
 
-
+		console.log(this.state.isOpen);
 		updated = updated.filter(function(project){
 			var news = [];
 			var test = project.vacancies.filter(function(item){
-				console.log(filterText);
-				console.log(item.name);
-				console.log(item.name.toLowerCase().indexOf(filterText.toLowerCase()));
+				
 				if(item.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1){
-					news.push(item);
+					if(showOnlyOpenVacancies){
+						news.push(item);
+					} else {
+						news.push(item);
+					}
 					return true;
 				} else {
 					return false;
 				}
-				// return item.name.toLowerCase().search(filterText.toLowerCase() !== -1);
+				
 			});
 
-			console.log("test", test);
 			if(test.length > 0){
 				filteredProjects.push({
 					name: project.name,
@@ -350,7 +373,7 @@ var VacancyFilter = React.createClass({
 				});
 			}
 		});
-		console.log("updated", filteredProjects);
+		
 		
 		this.setState({
 			filteredProjects: filteredProjects
@@ -358,24 +381,26 @@ var VacancyFilter = React.createClass({
 	},
 	render: function(){
 		var projects;
-		console.log(this.state.filteredProjects);
+		
 		if(this.state.filteredProjects.length == 0){
-			console.log(true);
 			projects = this.props.projects;
 		} else {
 			projects = this.state.filteredProjects;
 		}
-		console.log(this.props.projects);
-		console.log(projects);
+		// console.log(this.props.projects);
+		// console.log(projects);
 		return (
 			<div className="vacancy-filter">
 				<SearchBar
 					filterText={this.state.filterText}
 					onFilterTextInput={this.handleFilterTextInput}
+					isVacancyOpen={this.isVacancyOpen}
 				/>
+				<AddButton name="проект" title="Проект" projects={this.props.projects}/>
 				<ProjectList 
 					projects={projects}
 					filterText={this.state.filteredProjects}
+					isVacancyOpen={this.isVacancyOpen}
 				/>
 			</div>
 		);
@@ -398,7 +423,7 @@ var ProjectNew = React.createClass({
 
 var ProjectAdd = React.createClass({
 	getInitialState: function(){
-		return {projectList: projectsList, input: ''};
+		return {projectList: this.props.projects, input: ''};
 	},
 	onAddProject: function(e){
 		// var projectName = this.state.projectList;
@@ -487,7 +512,7 @@ var AddButton = React.createClass({
 		return {isModalOpen: false};
 	},
 	toggleModal: function(e){
-		console.log(e);
+		// console.log(e);
 		e.preventDefault();
 		
 		this.setState({isModalOpen: !this.state.isModalOpen})
@@ -504,7 +529,7 @@ var AddButton = React.createClass({
 			<div className={className} onClick={this.handleClick}>
 				<a className="link" href="#" onClick={this.toggleModal}>Добавить {this.props.name}</a>
 				<Modal show={this.state.isModalOpen}
-					onClose={this.toggleModal} name={this.props.name} title={this.props.title} vacancies={this.props.vacancies}/>
+					onClose={this.toggleModal} name={this.props.name} title={this.props.title} vacancies={this.props.vacancies} projects={this.props.projects}/>
 			</div>
 		);
 	}
@@ -522,9 +547,9 @@ var Modal = React.createClass({
 			<div className="background-overlay">
 				<div className="modal-window">
 					Новый проект
-					<a className="link link-grey" href="#" onClick={this.props.onClose}><i className="glyphicon glyphicon-remove"></i></a>
+					<a className="link link-grey link-right" href="#" onClick={this.props.onClose}><i className="glyphicon glyphicon-remove"></i></a>
 					<hr/>
-					<ProjectAdd onCloseModal={this.props.onClose}/>
+					<ProjectAdd projects={this.props.projects} onCloseModal={this.props.onClose}/>
 				</div>
 			</div>
 			);	
@@ -535,7 +560,7 @@ var Modal = React.createClass({
 				<div className="modal-window">
 					<h4>
 					Новая вакансия
-					<a className="link link-grey" href="#" onClick={this.props.onClose}><i className="glyphicon glyphicon-remove"></i></a>
+					<a className="link link-grey link-right" href="#" onClick={this.props.onClose}><i className="glyphicon glyphicon-remove"></i></a>
 					</h4>
 					<hr/>
 					<VacancyAdd onCloseModal={this.props.onClose} vacancies={this.props.vacancies}/>
@@ -551,8 +576,7 @@ var App = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<VacancyFilter projects={projectsList}/>
-				<AddButton name="проект" title="Проект"/>
+				<VacancyFilter projects={this.props.projects}/>
 			</div>
 		);
 	}
@@ -560,7 +584,7 @@ var App = React.createClass({
 
 function render(){
 	ReactDOM.render(
-		<App/>,
+		<App projects={projectsList}/>,
 		document.getElementById('root')
 	);
 }
