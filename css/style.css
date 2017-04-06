@@ -53,9 +53,10 @@ a.link-green, a.link-green:visited, a.link-green:focus, a.link-green:hover {
 
 .vacancy-new a.link-right, .project-new a.link-right {
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 20px;
+	right: 24px;
 	padding: 0;
+	z-index: 200;
 }
 
 i.glyphicon {
