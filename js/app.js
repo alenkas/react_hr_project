@@ -562,7 +562,7 @@ var Modal = React.createClass({
 				<div className="modal-window">
 					<h4>
 					Новая вакансия
-					<a className="link link-grey link-right" href="#" onClick={this.props.onClose}><i className="glyphicon glyphicon-remove"></i></a>
+					<a className="link link-grey link-right" href="#" onClick={this.props.onClose}><i className="close-icon"></i></a>
 					</h4>
 					<hr/>
 					<VacancyAdd onCloseModal={this.props.onClose} vacancies={this.props.vacancies}/>
